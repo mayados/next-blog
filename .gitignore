@@ -35,3 +35,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+#nextjs-blog-cluster mongodb atlas : wNBZclBchslVkXqH
