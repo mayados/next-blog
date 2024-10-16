@@ -1,16 +1,38 @@
+import { db } from '@/lib/db'
 import React from 'react'
 
-const page = () => {
+// En programmation JS côté serveur, nous travaillons en asynchrone
+const ArticlePage = async () => {
+
+  //Récupérer la liste des articles
+  // Ici on appel le nom du model (car on passe par l'ORM)
+  // En NoSQL, le findAll est findMany
+  // Ici on a apporté  le db que l'on a déclaré en global dans notre dossier lib (db.ts) grâce à ctrl + espace
+  //  L'accolade dans le findMany permet d'insérer des arguments (pour trier etc...)
+  const articles = await db.article.findMany({
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
+
   return (
     <div>
-        <h1 className='text-2xl font-bold uppercase my-5'>Mon titre</h1>
-        <p className='text-lg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia dicta temporibus aperiam odit mollitia sed ab, itaque cum voluptatum, molestias placeat corrupti reiciendis perspiciatis obcaecati accusamus esse dolor vero voluptatibus.
-        Tenetur blanditiis ipsam voluptate eius praesentium libero consequuntur! Optio soluta maxime eum aperiam suscipit et voluptatibus fugit earum laudantium veniam aliquid rerum non facilis, dicta obcaecati cupiditate dolores voluptatum perspiciatis.
-        Placeat explicabo repellendus ea reprehenderit dignissimos quam, vel in labore laudantium laboriosam fugiat nobis quis dolor a, corporis totam illum odio optio dolorem! Perspiciatis ab asperiores est perferendis temporibus nihil?
-        Eos facere adipisci at minima tenetur accusamus expedita distinctio deserunt. Numquam, iure. Culpa error laborum laboriosam nihil odit quae repellendus provident rem repudiandae iure, consequuntur pariatur perspiciatis voluptate iusto ratione?
-        Facilis sed sequi vitae consequatur ipsum, iure modi eius optio sapiente libero eveniet blanditiis, mollitia a, provident doloremque debitis! Enim architecto, laudantium consectetur nam placeat dignissimos atque facilis repellat dolores.</p>
+        <h1>Blog</h1>
+        {/* Liste des articles */}
+        {
+          // Liste des articles
+          // Faire une boucle en react dans un composant
+          // Chaque parent de l'élément de la bouce doit être identifié par une clé (key), car ici chaque article doit être unique
+          articles.map((article: any) => (
+            <div className='mb-6' key="{article.id}">
+              {/* Titre de l'article, nous l'appelons en fonction donné au champ en base de données */}
+              <h2 className='text-emerald-700'>{article.title}</h2>
+              {/* Texte de l'article */}
+              <p>{article.text}</p>
+            </div>
+          ))}
     </div>
   )
 }
 
-export default page
+export default ArticlePage
