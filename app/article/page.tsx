@@ -1,6 +1,6 @@
 // On transforme notre page en composant client et non plus serveur. Il faut faire ainsi car nous importons un composant qui a besoin de useEffect, il faut donc que l'un de ses parents soit marqué avec "use client"
 "use client"
-import { formatDate } from '@/lib/utils'
+import ArticleCard from '@/components/ArticleCard'
 import React, { useEffect, useState } from 'react'
 
 const ArticlePage = () =>  {
@@ -29,30 +29,25 @@ const ArticlePage = () =>  {
   return (
     // Mettre une div qui n'aura pas de style (par exemple de className) est une mauvaise pratique, c'est pour cela qu'on utilise les fragments <></> à la place. 
     <>
-        <h1>Blog</h1>
-        {/* Liste des articles */}
-        {
-          // Liste des articles
-          // Faire une boucle en react dans un composant
-          // Chaque parent de l'élément de la boucle doit être identifié par une clé (key), car ici chaque article doit être unique
-          //  any est juste mis à des fins de test pour le moment. C'est une mauvaise pratique de typer les éléments aisni
-          articles.map((article: any) => (
-            <div className='mb-6' key="{article.id}">
-              {/* Titre de l'article, nous l'appelons en fonction donné au champ en base de données */}
-              <h2 className='text-emerald-700'>{article.title}</h2>
-              {/* Date et heure */}
-              <p>{formatDate(article.createdAt)}</p>
-              {/* Liste des tags d'un article */}
-              {
-                article.tags.map((tagArticle: any) => (
-                  <span key={tagArticle.tag.id}>
-                    {tagArticle.tag.name}
-                  </span>
-                ))}
-              {/* Texte de l'article */}
-              <p>{article.text}</p>
-            </div>
-          ))}
+        <h1 className='mb-3'>Blog</h1>
+        {/* Tailwind est mobile first, donc nous commençons d'abord par noter ce que nous souhaitons pour le mobile */}
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+          {/* Liste des articles */}
+          {
+            // Liste des articles
+            // Faire une boucle en react dans un composant
+            // Chaque parent de l'élément de la boucle doit être identifié par une clé (key), car ici chaque article doit être unique
+            //  any est juste mis à des fins de test pour le moment. C'est une mauvaise pratique de typer les éléments aisni
+            articles.map((article: any) => (
+              <>
+                {/* // On renvoie le composant ArticleCard
+                // Le premier article est le nom de la propriété générique dans le composant
+                // Le deuxième article est le nom de la variable que l'on souhaite faire passer */}
+                <ArticleCard article={article} />
+              </>
+
+            ))}          
+        </div>
     </>
   )
 }
