@@ -1,12 +1,18 @@
 import React from 'react'
 import { formatDate } from '@/lib/utils'
 import Button from './Button'
+import Tag from './Tag'
+
+// article est de type ArticleWithTagsAndComments qui se trouve dans le fichier du dossier "types"
+interface ArticleCardProps{
+  article: ArticleWithTagsAndComments
+}
 
 // Nous disons que nous faisons passer des propriétés en paramètres du composant, et qu'elle peut etre de tout type (car ce n'est qu'un test)
 // entre accolades : le nom de la propriété (ici l'objet) que l'on souhaite faire passer
-const ArticleCard:React.FC<any> = ({ article }) => {
+const ArticleCard:React.FC<ArticleCardProps> = ({ article }) => {
   return (
-    <div className='group border border-slate-700 p-6 rounded-md hover:bg-gray-600 cursor-pointer hover:-translate-y-2 duration-500' key="{article.id}">
+    <div className='group border border-slate-700 p-6 rounded-md hover:bg-gray-600 cursor-pointer hover:-translate-y-2 duration-500'>
         {/* Titre de l'article, nous l'appelons en fonction donné au champ en base de données */}
         <h2 className='text-xl font-bold'>{article.title}</h2>
         {/* Date et heure */}
@@ -14,13 +20,9 @@ const ArticleCard:React.FC<any> = ({ article }) => {
         {/* Liste des tags d'un article */}
         <div className='flex flex-wrap gap-2 my-4'>
         {
-            article.tags.map((tagArticle: any) => (
-            <span 
-                className='px-3 py-2 text-xs rounded-full bg-neutral-500 group-hover:bg-red-400'
-                key={tagArticle.tag.id}
-            >
-                {tagArticle.tag.name}
-            </span>
+            article.tags.map((tagArticle) => (
+              // Il est mieux de faire passer la key ici que dans le composant, sinon cela peut créer des conflits
+              <Tag key={tagArticle.tag.id} name={tagArticle.tag.name} />              
             ))}                  
         </div>
 
