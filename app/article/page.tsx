@@ -1,6 +1,7 @@
 // On transforme notre page en composant client et non plus serveur. Il faut faire ainsi car nous importons un composant qui a besoin de useEffect, il faut donc que l'un de ses parents soit marqué avec "use client"
 "use client"
 import ArticleCard from '@/components/ArticleCard'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const ArticlePage = () =>  {
@@ -10,13 +11,14 @@ const ArticlePage = () =>  {
   // Un setter avec un use state : est fait pour faire varier la valeur d'un élément
   // Ici, le use effect est utilisé uniquement dans le cadre de la consommation d'api
   // Toujours appeler le setter avec set+ le même nom que la constante elle-même
-  //  Ici par défaut, la collection est un tableau vide
-  const [articles, setArticles] = useState([])
+  //  Ici par défaut, la collection est un tableau vide de ayant pour type ArticleWithTagsAndComments
+  const [articles, setArticles] = useState<ArticleWithTagsAndComments[]>([])
 
   useEffect(() => {
     const fetchArticles = async () => {
       const response = await fetch('/api/article')
-      const data = await response.json()
+      // On type la constante data. De cette façon, si nous récupérons autre chose que la structure établie au départ, il y aura une erreur
+      const data: ArticleWithTagsAndComments[] =  await response.json()
       // J'hydrate mon objet article avec les datas récupérés
       setArticles(data)
     }
@@ -38,13 +40,14 @@ const ArticlePage = () =>  {
             // Faire une boucle en react dans un composant
             // Chaque parent de l'élément de la boucle doit être identifié par une clé (key), car ici chaque article doit être unique
             //  any est juste mis à des fins de test pour le moment. C'est une mauvaise pratique de typer les éléments aisni
-            articles.map((article: any) => (
-              <>
-                {/* // On renvoie le composant ArticleCard
+            articles.map((article) => (
+                // On renvoie le composant ArticleCard
                 // Le premier article est le nom de la propriété générique dans le composant
                 // Le deuxième article est le nom de la variable que l'on souhaite faire passer */}
-                <ArticleCard article={article} />
-              </>
+                // On met bien la key sur le link car c'est le parent global de notre élément dans la boucle
+                <Link key={article.id} href={`/article/${article.id}`}>
+                  <ArticleCard article={article} />                
+                </Link>
 
             ))}          
         </div>
