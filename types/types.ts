@@ -29,3 +29,12 @@ interface ArticleWithTagsAndComments{
     comments: CommentType[];
 }
 
+interface CommentType{
+    id: string;
+    text: string;
+    articleId: string;
+    article: ArticleWithTagsAndComments;
+    userId: string;
+    createdAt: Date;
+}
+
