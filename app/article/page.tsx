@@ -45,8 +45,8 @@ const ArticlePage = () =>  {
                 // Le premier article est le nom de la propriété générique dans le composant
                 // Le deuxième article est le nom de la variable que l'on souhaite faire passer */}
                 // On met bien la key sur le link car c'est le parent global de notre élément dans la boucle
-                <Link key={article.id} href={`/article/${article.id}`}>
-                  <ArticleCard article={article} />                
+                <Link href={`/article/${article.id}`}>
+                  <ArticleCard key={article.id} article={article} />                
                 </Link>
 
             ))}          
