@@ -2,6 +2,7 @@ import React from 'react'
 import { formatDate } from '@/lib/utils'
 import Button from './Button'
 import Tag from './Tag'
+import { Eye } from 'lucide-react';
 
 // article est de type ArticleWithTagsAndComments qui se trouve dans le fichier du dossier "types"
 interface ArticleCardProps{
@@ -30,7 +31,7 @@ const ArticleCard:React.FC<ArticleCardProps> = ({ article }) => {
         {/* Avec line-clamp sur tailwind (et en css classique) on peut limiter le texte sur le nombre de lignes que l'on souhaite */}
         <p className='line-clamp-4'>{article.text}</p>
 
-        <Button label="Lire plus..." />              
+        <Button label="Lire plus..." icon={Eye}  />              
 
     </div>
   )
